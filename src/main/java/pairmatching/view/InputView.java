@@ -7,21 +7,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import pairmatching.constant.CommandCode;
+import pairmatching.dto.CourseMissionDto;
 import pairmatching.dto.CrewDto;
 import pairmatching.dto.CrewsDto;
 import pairmatching.model.Course;
+import pairmatching.model.Level;
+import pairmatching.model.Mission;
 
 public class InputView {
-    private static final String SELECT_COMMAND_LIST_MESSAGE = "기능을 선택하세요.";
     private static final String RESOURCES_PATH = System.getProperty("user.dir") + "\\src\\main\\resources\\";
     private static final String BACKEND_CREW_FILE_NAME = "backend-crew.md";
     private static final String FRONTEND_CREW_FILE_NAME = "frontend-crew.md";
+    private static final String DELIMITER = ", ";
 
     public static CommandCode readCommandCode() {
-        System.out.println(SELECT_COMMAND_LIST_MESSAGE);
-        for (CommandCode commandCode : CommandCode.values()) {
-            System.out.printf("%s. %s\n", commandCode.getCode(), commandCode.getDescription());
-        }
+        OutputView.printCommandCodeList();
         String input = Console.readLine();
         return CommandCode.from(input);
     }
@@ -30,6 +30,16 @@ public class InputView {
         List<CrewDto> crewDtos = new ArrayList<>();
         addCrewDtos(crewDtos);
         return new CrewsDto(crewDtos);
+    }
+
+    public static CourseMissionDto readCourseLevelMission() {
+        OutputView.printCourseLevelMissionInfo();
+        String[] message = Console.readLine().split(DELIMITER);
+        Course course = Course.from(message[0]);
+        Level level = Level.from(message[1]);
+        Mission mission = Mission.from(message[2]);
+        mission.isEqualLevel(level);
+        return new CourseMissionDto(course, mission);
     }
 
     private static void addCrewDtos(List<CrewDto> crewDtos) throws IOException {

@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import pairmatching.constant.CommandCode;
+import pairmatching.dto.CrewDto;
+import pairmatching.dto.CrewsDto;
+import pairmatching.model.Course;
 
 public class InputView {
     private static final String SELECT_COMMAND_LIST_MESSAGE = "기능을 선택하세요.";
@@ -23,13 +26,30 @@ public class InputView {
         return CommandCode.from(input);
     }
 
-    public static List<String> readBackCrew() throws IOException {
+    public static CrewsDto readCrews() throws IOException {
+        List<CrewDto> crewDtos = new ArrayList<>();
+        addCrewDtos(crewDtos);
+        return new CrewsDto(crewDtos);
+    }
+
+    private static void addCrewDtos(List<CrewDto> crewDtos) throws IOException {
+        List<String> backCrews = readBackCrews();
+        List<String> frontCrews = readFrontCrews();
+        for (String name : backCrews) {
+            crewDtos.add(new CrewDto(Course.BACKEND, name));
+        }
+        for (String name : frontCrews) {
+            crewDtos.add(new CrewDto(Course.FRONTEND, name));
+        }
+    }
+
+    private static List<String> readBackCrews() throws IOException {
         List<String> crewNames = new ArrayList<>();
         readFile(crewNames, BACKEND_CREW_FILE_NAME);
         return crewNames;
     }
 
-    public static List<String> readFrontCrew() throws IOException {
+    private static List<String> readFrontCrews() throws IOException {
         List<String> crewNames = new ArrayList<>();
         readFile(crewNames, FRONTEND_CREW_FILE_NAME);
         return crewNames;

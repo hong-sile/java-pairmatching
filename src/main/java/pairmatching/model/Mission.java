@@ -10,6 +10,8 @@ public enum Mission {
     REFACTORING("성능개선", Level.LEVEL4),
     PUBLISH("배포", Level.LEVEL4);
 
+    private static final String INVALID_NAME_MESSAGE = "입력한 값과 일치하는 미션이 없습니다.";
+    private static final String UNMATCHED_LEVEL_MESSAGE = "레벨과 미션이 일치하지 않습니다.";
     private final String name;
     private final Level level;
 
@@ -24,5 +26,20 @@ public enum Mission {
 
     public Level getLevel() {
         return level;
+    }
+
+    public static Mission from(String name) {
+        for (Mission mission : Mission.values()) {
+            if (mission.name.equals(name)) {
+                return mission;
+            }
+        }
+        throw new IllegalArgumentException(INVALID_NAME_MESSAGE);
+    }
+
+    public void isEqualLevel(Level level) {
+        if (this.level != level) {
+            throw new IllegalArgumentException(UNMATCHED_LEVEL_MESSAGE);
+        }
     }
 }

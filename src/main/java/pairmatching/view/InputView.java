@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import pairmatching.constant.CommandCode;
-import pairmatching.dto.CourseMissionDto;
+import pairmatching.dto.MissionAndCourseDto;
 import pairmatching.dto.CrewDto;
 import pairmatching.dto.CrewsDto;
 import pairmatching.model.Course;
@@ -32,14 +32,14 @@ public class InputView {
         return new CrewsDto(crewDtos);
     }
 
-    public static CourseMissionDto readCourseLevelMission() {
+    public static MissionAndCourseDto readCourseLevelMission() {
         OutputView.printCourseLevelMissionInfo();
         String[] message = Console.readLine().split(DELIMITER);
         Course course = Course.from(message[0]);
         Level level = Level.from(message[1]);
         Mission mission = Mission.from(message[2]);
         mission.isEqualLevel(level);
-        return new CourseMissionDto(course, mission);
+        return new MissionAndCourseDto(mission, course);
     }
 
     private static void addCrewDtos(List<CrewDto> crewDtos) throws IOException {

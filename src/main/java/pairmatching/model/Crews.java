@@ -6,21 +6,35 @@ import java.util.List;
 import pairmatching.dto.CrewDto;
 
 public class Crews {
-    private List<Crew> crews = new ArrayList<>();
+    private final List<Crew> backendCrews = new ArrayList<>();
+    private final List<Crew> frontendCrews = new ArrayList<>();
 
     public Crews(List<CrewDto> crewDtos) {
         for (CrewDto crewDto : crewDtos) {
-            crews.add(new Crew(crewDto.getCourse(), crewDto.getName()));
+            if (crewDto.getCourse() == Course.FRONTEND) {
+                frontendCrews.add(new Crew(Course.FRONTEND, crewDto.getName()));
+            }
+            if (crewDto.getCourse() == Course.BACKEND) {
+                backendCrews.add(new Crew(Course.BACKEND, crewDto.getName()));
+            }
         }
     }
 
-    public Pairs matchCrews(Mission mission) {
+    //리팩토링 필요
+    public Pairs matchCrews(Course course) {
+        if (Course.FRONTEND == course) {
+            return new Pairs(matchPairs(frontendCrews));
+        }
+        return new Pairs(matchPairs(backendCrews));
+    }
+
+    private static List<Pair> matchPairs(List<Crew> crews) {
         List<Pair> pairs = new ArrayList<>();
-        this.crews = Randoms.shuffle(crews);
-        for (int i = 0; i < crews.size(); i = i + 2) {
-            Pair pair = new Pair(crews.subList(i, i + 1), mission);
+        List<Crew> shuffledCrews = Randoms.shuffle(crews);
+        for (int i = 0; i < shuffledCrews.size(); i = i + 2) {
+            Pair pair = new Pair(shuffledCrews.subList(i, i + 1));
             pairs.add(pair);
         }
-        return new Pairs(pairs);
+        return pairs;
     }
 }

@@ -22,11 +22,11 @@ public class PairMatchingService {
         throw new IllegalArgumentException(NEVER_MATCHED_MESSAGE);
     }
 
-    public void matchingPair(Mission mission, Course course) {
-        MissionAndCourse missionAndCourse = new MissionAndCourse(mission, course);
+    public void matchingPair(MissionAndCourseDto missionAndCourseDto) {
+        MissionAndCourse missionAndCourse = missionAndCourseDto.getMissionAndCourse();
         if (matchedPairs.isMatched(missionAndCourse)) {
             //다시 초기화 할 것인지 여부를 입력 받음
         }
-        matchedPairs.put(missionAndCourse, crews.matchCrews(course));
+        matchedPairs.put(missionAndCourse, crews.matchCrews(missionAndCourse));
     }
 }

@@ -9,4 +9,7 @@ public class MissionAndCourse {
         this.course = course;
     }
 
+    public boolean checkCourse(Course course) {
+        return this.course == course;
+    }
 }

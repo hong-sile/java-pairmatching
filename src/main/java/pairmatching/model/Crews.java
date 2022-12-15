@@ -21,8 +21,8 @@ public class Crews {
     }
 
     //리팩토링 필요
-    public Pairs matchCrews(Course course) {
-        if (Course.FRONTEND == course) {
+    public Pairs matchCrews(MissionAndCourse missionAndCourse) {
+        if (missionAndCourse.checkCourse(Course.FRONTEND)) {
             return new Pairs(matchPairs(frontendCrews));
         }
         return new Pairs(matchPairs(backendCrews));

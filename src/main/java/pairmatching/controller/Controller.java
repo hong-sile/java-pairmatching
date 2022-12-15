@@ -21,7 +21,7 @@ public class Controller {
         CommandCode commandCode;
         do {
             commandCode = repeat(InputView::readCommandCode);
-            runCommandCode(commandCode);
+            repeat(this::runCommandCode, commandCode);
         } while (commandCode != CommandCode.EXIT_PROGRAM);
     }
 
@@ -33,18 +33,25 @@ public class Controller {
             lookUp();
         }
         if (commandCode == CommandCode.PAIR_CLEAR) {
-
+            clear();
         }
     }
 
     private void matching() {
-
+        MissionAndCourseDto missionAndCourseDto = InputView.readCourseLevelMission();
+        service.matchingPair(missionAndCourseDto);
+        PairsDto pairsDto = service.lookUp(missionAndCourseDto);
+        OutputView.printPairs(pairsDto);
     }
 
     private void lookUp() {
         MissionAndCourseDto missionAndCourseDto = this.repeat(InputView::readCourseLevelMission);
         PairsDto pairsDto = service.lookUp(missionAndCourseDto);
         OutputView.printPairs(pairsDto);
+    }
+
+    private void clear() {
+
     }
 
     public <T> T repeat(Supplier<T> reader) {
@@ -56,7 +63,7 @@ public class Controller {
         }
     }
 
-    public <T> void repeat(Consumer method, CommandCode commandCode) {
+    public <T> void repeat(Consumer<T> method, T commandCode) {
         try {
             method.accept(commandCode);
         } catch (IllegalArgumentException exception) {

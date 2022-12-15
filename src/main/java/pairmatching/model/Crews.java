@@ -31,10 +31,28 @@ public class Crews {
     private static List<Pair> matchPairs(List<Crew> crews) {
         List<Pair> pairs = new ArrayList<>();
         List<Crew> shuffledCrews = Randoms.shuffle(crews);
-        for (int i = 0; i < shuffledCrews.size(); i = i + 2) {
-            Pair pair = new Pair(shuffledCrews.subList(i, i + 1));
-            pairs.add(pair);
+        if (shuffledCrews.size() % 2 == 0) {
+            matchPairIfSizeEven(pairs, shuffledCrews);
+        }
+        if (shuffledCrews.size() % 2 == 1) {
+            matchPairIfSizeOdd(pairs, shuffledCrews);
         }
         return pairs;
+    }
+
+    private static void matchPairIfSizeOdd(List<Pair> pairs, List<Crew> shuffledCrews) {
+        for (int i = 0; i < shuffledCrews.size() - 1; i = i + 2) {
+            if (i == shuffledCrews.size() - 3) {
+                pairs.add(new Pair(shuffledCrews.subList(i, i + 2)));
+                continue;
+            }
+            pairs.add(new Pair(shuffledCrews.subList(i, i + 1)));
+        }
+    }
+
+    private static void matchPairIfSizeEven(List<Pair> pairs, List<Crew> shuffledCrews) {
+        for (int i = 0; i < shuffledCrews.size(); i = i + 2) {
+            pairs.add(new Pair(shuffledCrews.subList(i, i + 1)));
+        }
     }
 }

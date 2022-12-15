@@ -1,7 +1,12 @@
 package pairmatching.view;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import pairmatching.constant.CommandCode;
+import pairmatching.dto.CrewDto;
+import pairmatching.dto.PairDto;
+import pairmatching.dto.PairsDto;
+import pairmatching.model.Pairs;
 
 public class OutputView {
     private static final String EXCEPTION_MESSAGE_PREFIX = "[ERROR]";
@@ -18,6 +23,7 @@ public class OutputView {
                     "  - 레벨5: ",
                     "############################################");
     private static final String SELECT_COMMAND_LIST_MESSAGE = "기능을 선택하세요.";
+    private static final String DELIMITER = " : ";
 
     public static void printException(IllegalArgumentException exception) {
         System.out.print(EXCEPTION_MESSAGE_PREFIX);
@@ -35,6 +41,16 @@ public class OutputView {
         System.out.println(SELECT_COMMAND_LIST_MESSAGE);
         for (CommandCode commandCode : CommandCode.values()) {
             System.out.printf("%s. %s\n", commandCode.getCode(), commandCode.getDescription());
+        }
+    }
+
+    public static void printPairs(PairsDto pairsDto) {
+        for (PairDto pairDto : pairsDto.getPairs()) {
+            String pair = pairDto.getPair()
+                    .stream()
+                    .map(CrewDto::getName)
+                    .collect(Collectors.joining(":"));
+            System.out.println(pair);
         }
     }
 }

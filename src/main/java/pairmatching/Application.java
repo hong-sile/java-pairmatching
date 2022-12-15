@@ -1,7 +1,15 @@
 package pairmatching;
 
+import java.io.IOException;
+import pairmatching.controller.Controller;
+
 public class Application {
     public static void main(String[] args) {
-        // TODO 구현 진행
+        try {
+            Controller controller = new Controller();
+            controller.run();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
